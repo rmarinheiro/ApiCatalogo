@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,7 +21,7 @@ import br.com.rafael.catalogo.entities.Product;
 import br.com.rafael.catalogo.repository.CategoryRepository;
 import br.com.rafael.catalogo.repository.ProductRepository;
 import br.com.rafael.catalogo.services.exceptions.DataBaseException;
-import br.com.rafael.catalogo.services.exceptions.EntityNotFoundException;
+import br.com.rafael.catalogo.services.exceptions.EntityResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -42,7 +44,7 @@ public class ProductService {
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
 		Optional<Product> obj = productRepository.findById(id);
-		Product product = obj.orElseThrow(() -> new EntityNotFoundException("Entity Not Found"));
+		Product product = obj.orElseThrow(() -> new EntityResourceNotFoundException("Entity Not Found"));
 		
 		
 
@@ -66,7 +68,7 @@ public class ProductService {
 			product = productRepository.save(product);
 			return new ProductDTO(product);
 		} catch (EntityNotFoundException e) {
-			throw new EntityNotFoundException("Id não encontrado");
+			throw new EntityResourceNotFoundException("Id não encontrado");
 		}
 	}
 
@@ -74,7 +76,7 @@ public class ProductService {
 		try {
 			productRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException("Id não Existe");
+			throw new EntityResourceNotFoundException("Id não Existe");
 		} catch (DataIntegrityViolationException e) {
 			throw new DataBaseException("Erro ao deletar a categoria");
 		}

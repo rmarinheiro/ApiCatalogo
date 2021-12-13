@@ -14,8 +14,8 @@ import br.com.rafael.catalogo.resources.exceptions.StandardError;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 	
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request){
+	@ExceptionHandler(EntityResourceNotFoundException.class)
+	public ResponseEntity<StandardError> entityNotFound(EntityResourceNotFoundException e, HttpServletRequest request){
 		StandardError err = new StandardError();
 		err.setTimeStamp(Instant.now());
 		err.setStatus(HttpStatus.NOT_FOUND.value());

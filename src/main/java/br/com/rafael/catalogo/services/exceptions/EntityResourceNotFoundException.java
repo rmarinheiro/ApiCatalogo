@@ -1,10 +1,10 @@
 package br.com.rafael.catalogo.services.exceptions;
 
-public class EntityNotFoundException extends RuntimeException {
+public class EntityResourceNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public EntityNotFoundException(String message) {
+	public EntityResourceNotFoundException(String message) {
 		super(message);
 	}
 	

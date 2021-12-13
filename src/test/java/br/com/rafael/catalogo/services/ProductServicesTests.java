@@ -28,7 +28,7 @@ import br.com.rafael.catalogo.factory.Factory;
 import br.com.rafael.catalogo.repository.CategoryRepository;
 import br.com.rafael.catalogo.repository.ProductRepository;
 import br.com.rafael.catalogo.services.exceptions.DataBaseException;
-import br.com.rafael.catalogo.services.exceptions.EntityNotFoundException;
+import br.com.rafael.catalogo.services.exceptions.EntityResourceNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 public class ProductServicesTests {
@@ -94,11 +94,11 @@ public class ProductServicesTests {
 		
 		Mockito.when(productRepository.getById(existingId)).thenReturn(product);
 		
-		Mockito.when(productRepository.getById(nonExistingId)).thenThrow(EntityNotFoundException.class);
+		Mockito.when(productRepository.getById(nonExistingId)).thenThrow(EntityResourceNotFoundException.class);
 		
 		Mockito.when(categoryRepository.getById(existingId)).thenReturn(category);
 		
-		Mockito.when(categoryRepository.getById(nonExistingId)).thenThrow(EntityNotFoundException.class);
+		Mockito.when(categoryRepository.getById(nonExistingId)).thenThrow(EntityResourceNotFoundException.class);
 		
 		
 		
@@ -131,7 +131,7 @@ public class ProductServicesTests {
 	@Test
 	public void deleteShouldThrowEmptyResultDataAccessExceptionWhenIdDoesNotExists() {
 		
-		Assertions.assertThrows(EntityNotFoundException.class,() ->{
+		Assertions.assertThrows(EntityResourceNotFoundException.class,() ->{
 			productService.delete(nonExistingId);
 		});
 		
@@ -159,7 +159,7 @@ public class ProductServicesTests {
 	
 	@Test
 	public void findByIdShouldThrowEntityNotFoundExceptionWhenIdNotExists() {
-		Assertions.assertThrows(EntityNotFoundException.class, ()->{
+		Assertions.assertThrows(EntityResourceNotFoundException.class, ()->{
 			productService.findById(nonExistingId);
 		});
 		
@@ -183,7 +183,7 @@ public class ProductServicesTests {
 	
 	@Test
 	public void updateShouldThrowEntityNotFoundExceptionWhenIdNotExists() {
-		Assertions.assertThrows(EntityNotFoundException.class, ()->{
+		Assertions.assertThrows(EntityResourceNotFoundException.class, ()->{
 			productService.update(productDTO, nonExistingId);
 		});
 		

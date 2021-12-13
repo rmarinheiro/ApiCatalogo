@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.rafael.catalogo.dto.ProductDTO;
 import br.com.rafael.catalogo.repository.ProductRepository;
-import br.com.rafael.catalogo.services.exceptions.EntityNotFoundException;
+import br.com.rafael.catalogo.services.exceptions.EntityResourceNotFoundException;
 
 @SpringBootTest
 @Transactional
@@ -50,7 +50,7 @@ public class ProductServiceIT {
 	
 	@Test
 	public void deleteShouldThrowEntityNotFoundExceptionWhenIdNotExists() {
-		Assertions.assertThrows(EntityNotFoundException.class, ()->{
+		Assertions.assertThrows(EntityResourceNotFoundException.class, ()->{
 			productService.delete(noExistingId);
 		});
 		

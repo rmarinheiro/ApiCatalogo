@@ -35,7 +35,7 @@ import br.com.rafael.catalogo.factory.Factory;
 import br.com.rafael.catalogo.repository.CategoryRepository;
 import br.com.rafael.catalogo.services.ProductService;
 import br.com.rafael.catalogo.services.exceptions.DataBaseException;
-import br.com.rafael.catalogo.services.exceptions.EntityNotFoundException;
+import br.com.rafael.catalogo.services.exceptions.EntityResourceNotFoundException;
 
 @WebMvcTest(ProductResource.class)
 public class ProductResourceTests {
@@ -80,15 +80,15 @@ public class ProductResourceTests {
 
 		when(productService.findById(existingId)).thenReturn(productDTO);
 
-		when(productService.findById(nonExistingId)).thenThrow(EntityNotFoundException.class);
+		when(productService.findById(nonExistingId)).thenThrow(EntityResourceNotFoundException.class);
 
 		when(productService.update(any(), eq(existingId))).thenReturn(productDTO);
 
-		when(productService.update(any(), eq(nonExistingId))).thenThrow(EntityNotFoundException.class);
+		when(productService.update(any(), eq(nonExistingId))).thenThrow(EntityResourceNotFoundException.class);
 		
 		doNothing().when(productService).delete(existingId);
 		
-		doThrow(EntityNotFoundException.class).when(productService).delete(nonExistingId);
+		doThrow(EntityResourceNotFoundException.class).when(productService).delete(nonExistingId);
 		
 		when(productService.insert(any())).thenReturn(productDTO);
 		

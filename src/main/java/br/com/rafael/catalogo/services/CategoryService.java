@@ -17,7 +17,7 @@ import br.com.rafael.catalogo.dto.CategoryDTO;
 import br.com.rafael.catalogo.entities.Category;
 import br.com.rafael.catalogo.repository.CategoryRepository;
 import br.com.rafael.catalogo.services.exceptions.DataBaseException;
-import br.com.rafael.catalogo.services.exceptions.EntityNotFoundException;
+import br.com.rafael.catalogo.services.exceptions.EntityResourceNotFoundException;
 
 
 @Service
@@ -39,7 +39,7 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
 		Optional<Category> obj= categoryRepository.findById(id);
-		Category category = obj.orElseThrow(()-> new EntityNotFoundException("Entity Not Found"));
+		Category category = obj.orElseThrow(()-> new EntityResourceNotFoundException("Entity Not Found"));
 		
 		return new CategoryDTO(category);
 	}
@@ -60,8 +60,8 @@ public class CategoryService {
 			category.setName(dto.getName());
 			category = categoryRepository.save(category);
 			return new CategoryDTO(category);
-		} catch (EntityNotFoundException e) {
-			throw new EntityNotFoundException("Id não encontrado");
+		} catch (EntityResourceNotFoundException e) {
+			throw new EntityResourceNotFoundException("Id não encontrado");
 		}
 	}
 
@@ -70,7 +70,7 @@ public class CategoryService {
 		try {
 			categoryRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException("Id não Existe");
+			throw new EntityResourceNotFoundException("Id não Existe");
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataBaseException("Erro ao deletar a categoria");
