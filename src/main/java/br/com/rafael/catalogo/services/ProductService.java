@@ -75,7 +75,7 @@ public class ProductService {
 	public void delete(Long id) {
 		try {
 			productRepository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (EntityNotFoundException e) {
 			throw new EntityResourceNotFoundException("Id não Existe");
 		} catch (DataIntegrityViolationException e) {
 			throw new DataBaseException("Erro ao deletar a categoria");
