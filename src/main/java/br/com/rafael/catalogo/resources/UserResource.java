@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,7 +57,7 @@ public class UserResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto){
+	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO dto){
 		UserDTO newDto =  userService.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newDto.getId()).toUri();
 		return ResponseEntity.created(uri).body(newDto);
@@ -63,7 +65,7 @@ public class UserResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@RequestBody UserDTO dto, @PathVariable Long id){
+	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO dto, @PathVariable Long id){
 		UserDTO DTO = userService.update(dto,id);
 		return ResponseEntity.ok().body(DTO);
 		
