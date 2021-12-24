@@ -1,5 +1,8 @@
 package br.com.rafael.catalogo.dto;
 
+import br.com.rafael.catalogo.services.validation.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO {
 
 	private static final long serialVersionUID = 1L;
