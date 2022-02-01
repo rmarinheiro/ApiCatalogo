@@ -1,8 +1,6 @@
 package br.com.rafael.catalogo.resources;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -24,7 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.rafael.catalogo.dto.UserDTO;
 import br.com.rafael.catalogo.dto.UserInsertDTO;
-import br.com.rafael.catalogo.entities.User;
+import br.com.rafael.catalogo.dto.UserUpdateDTO;
 import br.com.rafael.catalogo.services.UserService;
 
 @RestController
@@ -65,7 +63,7 @@ public class UserResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO dto, @PathVariable Long id){
+	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserUpdateDTO dto, @PathVariable Long id){
 		UserDTO DTO = userService.update(dto,id);
 		return ResponseEntity.ok().body(DTO);
 		

@@ -14,11 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.rafael.catalogo.dto.CategoryDTO;
 import br.com.rafael.catalogo.dto.RoleDTO;
 import br.com.rafael.catalogo.dto.UserDTO;
 import br.com.rafael.catalogo.dto.UserInsertDTO;
-import br.com.rafael.catalogo.entities.Category;
+import br.com.rafael.catalogo.dto.UserUpdateDTO;
 import br.com.rafael.catalogo.entities.Role;
 import br.com.rafael.catalogo.entities.User;
 import br.com.rafael.catalogo.repository.RoleRepository;
@@ -69,7 +68,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO update(UserDTO dto, Long id) {
+	public UserDTO update(UserUpdateDTO dto, Long id) {
 		try 	{
 			User user = userRepository.getById(id);
 			copyDTOToEntity(dto, user);
