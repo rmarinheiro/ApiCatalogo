@@ -1,6 +1,7 @@
 package br.com.rafael.catalogo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +16,15 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 @EnableAuthorizationServer
 public class AuthoriztionServerConfig extends AuthorizationServerConfigurerAdapter {
+	
+	@Value("${security.oauth2.client.client-id}")
+	private String clientId;
+	
+	@Value("${security.oauth2.client.client-secret}")
+	private String clientSecret;
+	
+	@Value("${jwt.duration}")
+	private Integer jwtDuration;
 	
 	@Autowired
 	private BCryptPasswordEncoder passworderEncoder;
@@ -37,10 +47,10 @@ public class AuthoriztionServerConfig extends AuthorizationServerConfigurerAdapt
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory().withClient("catalogo").secret(passworderEncoder.encode("catalogo123"))
+		clients.inMemory().withClient(clientId).secret(passworderEncoder.encode(clientSecret))
 		.scopes("ready" , "write")
 		.authorizedGrantTypes("password")
-		.accessTokenValiditySeconds(86400);
+		.accessTokenValiditySeconds(jwtDuration);
 	}
 
 	@Override
