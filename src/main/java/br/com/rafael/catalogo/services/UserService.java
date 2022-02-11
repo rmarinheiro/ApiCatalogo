@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncorder;
 	
-	@Autowired
+	
 
 	@Transactional(readOnly = true)
 	public List<UserDTO> findAll() {
