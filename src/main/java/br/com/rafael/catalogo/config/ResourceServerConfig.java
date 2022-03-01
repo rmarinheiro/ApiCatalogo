@@ -22,7 +22,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Autowired
 	private Environment env;
 	
-	private static final String[] PUBLIC = { "/oauth/token","/h2-console/**" };
+	private static final String[] PUBLIC = { "/oauth/token","/h2-console/**" ,"/swagger-ui.html/**" , "/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**",
+			"/swagger-ui.html", "/webjars/**"
+	};
 	
 	private static final String[] OPERATOR_OR_ADMIN = { "/producties/**", "/categories/**" };
 	
@@ -32,6 +34,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		resources.tokenStore(tokenStore);
 	}
+	
+	
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
