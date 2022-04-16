@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.com.rafael.catalogo.resources.tests.TokenUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,9 @@ public class ProductResourceIT {
 	private ObjectMapper objectMapper;
 	
 	private Long countTotalProducts;
-	
 
+	@Autowired
+	private TokenUtil tokenUtil;
 	
 	@BeforeEach
 	void setUp() throws Exception{
@@ -75,8 +77,10 @@ public class ProductResourceIT {
 		String nomeExpectedName = productDTO.getName(); 
 		String expectedDescription = productDTO.getDescription();
 
-		ResultActions result = mockMVC.perform(put("/producties/{id}", existingId).content(jsonBody)
-				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+		ResultActions result = mockMVC.perform(
+				tokenUtil.authenticatedRequest(mockMVC,
+				put("/producties/{id}", existingId).content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)));
 
 		result.andExpect(status().isOk());
 
@@ -94,8 +98,8 @@ public class ProductResourceIT {
 		String jsonBody = objectMapper.writeValueAsString(productDTO);
 		
 
-		ResultActions result = mockMVC.perform(put("/producties/{id}", noExistingId).content(jsonBody)
-				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+		ResultActions result = mockMVC.perform(tokenUtil.authenticatedRequest(mockMVC,put("/producties/{id}", noExistingId).content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)));
 
 		result.andExpect(status().isNotFound());
 
