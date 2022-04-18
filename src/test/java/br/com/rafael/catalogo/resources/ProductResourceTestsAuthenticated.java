@@ -132,6 +132,67 @@ public class ProductResourceTestsAuthenticated {
 		
 	}
 	
+	@Test
+	public void insertShouldReturn422WhenUserLoggerAndNameNotBlank() throws Exception{
+		String accessToken = tokenUtil.obtainAccessToken(mockMvc, adminUser, adminPassword);
+		HashSet listaCategory = new HashSet<>();
+		listaCategory.add(new Category(2L,"Eletronics"));
+		
+		Product product = new Product(null, "   ","a melhor caneca de programação", 50.00, "http://www.google.com", Instant.parse("2022-02-21T16:42:00Z"));
+		ProductDTO productDTO = new ProductDTO(product, listaCategory);
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/producties")
+						.header("Authorization", "Bearer " + accessToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON));
+		result.andExpect(status().isUnprocessableEntity());
+		
+		
+	}
+	
+	@Test
+	public void insertShouldReturn422WhenUserLoggedAndPriceNotPositive() throws Exception{
+		String accessToken = tokenUtil.obtainAccessToken(mockMvc, adminUser, adminPassword);
+		HashSet listaCategory = new HashSet<>();
+		listaCategory.add(new Category(2L,"Eletronics"));
+		
+		Product product = new Product(null, "Caneca do Java","a melhor caneca de programação", -50.00, "http://www.google.com", Instant.parse("2022-02-21T16:42:00Z"));
+		ProductDTO productDTO = new ProductDTO(product, listaCategory);
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/producties")
+						.header("Authorization", "Bearer " + accessToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON));
+		result.andExpect(status().isUnprocessableEntity());
+		
+	}
+	
+	@Test
+	public void insertShouldReturn422WhenUserLoggedAndDateFuture() throws Exception{
+		String accessToken = tokenUtil.obtainAccessToken(mockMvc, adminUser, adminPassword);
+		HashSet listaCategory = new HashSet<>();
+		listaCategory.add(new Category(2L,"Eletronics"));
+		
+		Product product = new Product(null, "Caneca do Java","a melhor caneca de programação", 50.00, "http://www.google.com", Instant.parse("2023-04-21T16:42:00Z"));
+		ProductDTO productDTO = new ProductDTO(product, listaCategory);
+		String jsonBody = objectMapper.writeValueAsString(productDTO);
+		
+		ResultActions result = 
+				mockMvc.perform(post("/producties")
+						.header("Authorization", "Bearer " + accessToken)
+						.content(jsonBody)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON));
+		result.andExpect(status().isUnprocessableEntity());
+		
+	}
+	
 	
 	
 

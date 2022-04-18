@@ -97,11 +97,6 @@ public class SwaggerConfig {
 
 	}
 	
-	@SuppressWarnings("deprecation")
-	@Bean
-    public SecurityConfiguration securityInfo() {
-        return new SecurityConfiguration(clientId, clientSecret, "", "", "", ApiKeyVehicle.HEADER, "", " ");
-    }
 
 	private SecurityContext securityContext() {
 		return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(PathSelectors.ant("/producties/**"))

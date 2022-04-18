@@ -1,8 +1,10 @@
 package br.com.rafael.catalogo.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,6 +51,8 @@ public class User implements UserDetails, Serializable{
 				inverseJoinColumns = @JoinColumn(name="role_id")
 			)
 	private Set<Role> roles = new HashSet<>();
+	
+
 	
 	public User() {
 		// TODO Auto-generated constructor stub

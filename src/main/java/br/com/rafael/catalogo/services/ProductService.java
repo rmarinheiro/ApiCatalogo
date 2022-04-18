@@ -21,6 +21,7 @@ import br.com.rafael.catalogo.entities.Product;
 import br.com.rafael.catalogo.repository.CategoryRepository;
 import br.com.rafael.catalogo.repository.ProductRepository;
 import br.com.rafael.catalogo.services.exceptions.DataBaseException;
+import br.com.rafael.catalogo.services.exceptions.EmptyResourceNotFoundException;
 import br.com.rafael.catalogo.services.exceptions.EntityResourceNotFoundException;
 
 @Service
@@ -75,8 +76,8 @@ public class ProductService {
 	public void delete(Long id) {
 		try {
 			productRepository.deleteById(id);
-		} catch (EntityNotFoundException e) {
-			throw new EntityResourceNotFoundException("Id não Existe");
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResourceNotFoundException("Id não encontrado");
 		} catch (DataIntegrityViolationException e) {
 			throw new DataBaseException("Erro ao deletar a categoria");
 		}

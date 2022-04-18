@@ -55,5 +55,17 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
 		
 	}
+	
+	@ExceptionHandler(EmptyResourceNotFoundException.class)
+	public ResponseEntity<ValidationError> validation(EmptyResourceNotFoundException e, HttpServletRequest request){
+		ValidationError err = new ValidationError();
+		err.setTimeStamp(Instant.now());
+		err.setStatus(HttpStatus.NOT_FOUND.value());
+		err.setError("Valid exception ");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+		
+	}
 
 }

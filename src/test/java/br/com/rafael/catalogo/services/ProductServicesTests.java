@@ -131,7 +131,7 @@ public class ProductServicesTests {
 	@Test
 	public void deleteShouldThrowEmptyResultDataAccessExceptionWhenIdDoesNotExists() {
 		
-		Assertions.assertThrows(EntityResourceNotFoundException.class,() ->{
+		Assertions.assertThrows(EmptyResultDataAccessException.class,() ->{
 			productService.delete(nonExistingId);
 		});
 		
