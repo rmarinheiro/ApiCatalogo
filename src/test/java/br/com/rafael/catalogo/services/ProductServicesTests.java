@@ -1,5 +1,7 @@
 package br.com.rafael.catalogo.services;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,6 +29,7 @@ import br.com.rafael.catalogo.factory.Factory;
 import br.com.rafael.catalogo.repository.CategoryRepository;
 import br.com.rafael.catalogo.repository.ProductRepository;
 import br.com.rafael.catalogo.services.exceptions.DataBaseException;
+import br.com.rafael.catalogo.services.exceptions.EmptyResourceNotFoundException;
 import br.com.rafael.catalogo.services.exceptions.EntityResourceNotFoundException;
 
 @ExtendWith(SpringExtension.class)
@@ -86,6 +88,8 @@ public class ProductServicesTests {
 		
 		Mockito.when(productRepository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(page);
 		
+		Mockito.when(productRepository.find(any(), any(), any())).thenReturn(page);
+		
 		Mockito.when(productRepository.save(ArgumentMatchers.any())).thenReturn(product);
 		
 		Mockito.when(productRepository.findById(existingId)).thenReturn(Optional.of(product));
@@ -111,11 +115,11 @@ public class ProductServicesTests {
 	public void findAllPagedShouldReturnPage() {
 		
 		PageRequest pageable = PageRequest.of(0, 10);
-		Page<ProductDTO> result = productService.findAllPaged(pageable);
+		Page<ProductDTO> result = productService.findAllPaged(0L,"",pageable);
 		
 		Assertions.assertNotNull(result);
 		
-		Mockito.verify(productRepository).findAll(pageable);
+		//Mockito.verify(productRepository).findAll(pageable);
 	}
 	
 	@Test
@@ -131,7 +135,7 @@ public class ProductServicesTests {
 	@Test
 	public void deleteShouldThrowEmptyResultDataAccessExceptionWhenIdDoesNotExists() {
 		
-		Assertions.assertThrows(EmptyResultDataAccessException.class,() ->{
+		Assertions.assertThrows(EmptyResourceNotFoundException.class,() ->{
 			productService.delete(nonExistingId);
 		});
 		

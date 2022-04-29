@@ -85,7 +85,7 @@ public class ProductResourceTests {
 
         page = new PageImpl<>(List.of(productDTO));
 
-        when(productService.findAllPaged(any())).thenReturn(page);
+        when(productService.findAllPaged(any(),any(),any())).thenReturn(page);
 
         when(productService.findById(existingId)).thenReturn(productDTO);
 

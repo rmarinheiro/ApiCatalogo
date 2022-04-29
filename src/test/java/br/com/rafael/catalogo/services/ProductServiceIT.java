@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.rafael.catalogo.dto.ProductDTO;
 import br.com.rafael.catalogo.repository.ProductRepository;
+import br.com.rafael.catalogo.services.exceptions.EmptyResourceNotFoundException;
 import br.com.rafael.catalogo.services.exceptions.EntityResourceNotFoundException;
 
 @SpringBootTest
@@ -50,7 +51,7 @@ public class ProductServiceIT {
 	
 	@Test
 	public void deleteShouldThrowEntityNotFoundExceptionWhenIdNotExists() {
-		Assertions.assertThrows(EntityResourceNotFoundException.class, ()->{
+		Assertions.assertThrows(EmptyResourceNotFoundException.class, ()->{
 			productService.delete(noExistingId);
 		});
 		
@@ -61,7 +62,7 @@ public class ProductServiceIT {
 	public void findallPaggedShouldReturnPageWhenPage0Size10() {
 		PageRequest pageRequest = PageRequest.of(0, 10);
 		
-		Page<ProductDTO> result = productService.findAllPaged(pageRequest);
+		Page<ProductDTO> result = productService.findAllPaged(0L, "",pageRequest);
 		
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(0, result.getNumber());
@@ -69,11 +70,12 @@ public class ProductServiceIT {
 		Assertions.assertEquals(counTotalProducts, result.getTotalElements());
 	}
 	
+	
 	@Test
 	public void findallPaggedShouldReturnEmptyWhenPageDoesExist() {
 		PageRequest pageRequest = PageRequest.of(50, 10);
 		
-		Page<ProductDTO> result = productService.findAllPaged(pageRequest);
+		Page<ProductDTO> result = productService.findAllPaged(0L,"",pageRequest);
 		
 		Assertions.assertTrue(result.isEmpty());
 		
@@ -83,11 +85,11 @@ public class ProductServiceIT {
 	public void findAllPagedShouldReturnSortedPageWhenSortByName() {
 		PageRequest pageRequest = PageRequest.of(0, 10,Sort.by("name"));
 		
-		Page<ProductDTO> result = productService.findAllPaged(pageRequest);
+		Page<ProductDTO> result = productService.findAllPaged(0L,"",pageRequest);
 		
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals("Macbook Pro", result.getContent().get(0).getName());
 		
 	}
-
+  
 }

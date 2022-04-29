@@ -1,5 +1,6 @@
 package br.com.rafael.catalogo.services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,8 +86,10 @@ public class ProductService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
-		Page<Product> listaPaginada = productRepository.findAll(pageRequest);
+	public Page<ProductDTO> findAllPaged(Long categoryId, String name, PageRequest pageRequest ) {
+	 List<Category> categories =(categoryId == 0) ? null : Arrays.asList(categoryRepository.getById(categoryId));
+		Page<Product> listaPaginada = productRepository.find(categories,name.trim(), pageRequest);
+		productRepository.findProductsWithCategories(listaPaginada.getContent());
 		return listaPaginada.map(x -> new ProductDTO(x));
 	}
 
